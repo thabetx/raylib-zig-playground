@@ -4,12 +4,14 @@
 
 Build with `zig build`.
 
-`program.zig` Is the main part of the program.
+`program.zig` is the main program.
 
-'watcher.zig` watches `program.zig` and restarts it on change. This makes iterating on the code more fun.
+`watcher.zig` watches `program.zig` and restarts it on change. This makes iterating on the code more fun.
 
 You can use `watch.bat` to start the watcher.
 
-Note that this setup is currently works on Windows Only.
+`raylib.lib` is a bundled prebuilt raylib created by running 'zig build -Drelease-fast` in `raylib/src` in raylib's repository.
+
+Note that this setup currently works only on Windows.
 
 Enjoy!
