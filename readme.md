@@ -10,6 +10,8 @@ Build with `zig build`. Run with `zig build run-program`.
 
 You can use `watch.bat` to start the watcher.
 
+https://user-images.githubusercontent.com/7282243/191952771-37ded3ed-07e3-4693-8e81-fd81cd578551.mp4
+
 `raylib.lib` is a bundled prebuilt raylib created by running 'zig build -Drelease-fast` in `raylib/src` in raylib's repository.
 
 Note that this setup currently works only on Windows.
