@@ -10,7 +10,7 @@ pub fn main() !void {
     const allocator = arena.allocator();
 
     // Enable processing escape sequences in windows terminal.
-    // This makes it possible to clear the screen after compilation.
+    // This makes it possible to clear the screen before compilation.
     var hOutput = Windows.GetStdHandle(Windows.STD_OUTPUT_HANDLE);
     var dwMode: Windows.DWORD = undefined;
     var res = Windows.GetConsoleMode(hOutput, &dwMode);
@@ -19,41 +19,43 @@ pub fn main() !void {
     res = Windows.SetConsoleMode(hOutput, dwMode);
     std.debug.assert(res != 0);
 
-    var last_mtime: i128 = 0;
-    var p: ?std.ChildProcess = null;
+    var last_modification_time: i128 = 0;
+    var process: ?std.ChildProcess = null;
 
     const dir = std.fs.cwd();
 
     while (true) {
         const stat = try dir.statFile("program.zig");
-        if (stat.mtime != last_mtime) {
-            last_mtime = stat.mtime;
 
-            // clear the terminal
-            try std.io.getStdOut().writer().writeAll("\x1B[2J\x1B[H");
+        // file didn't change so no need to do anything
+        if (stat.mtime == last_modification_time)
+            continue;
 
-            if (p) |*pp|
-                _ = pp.kill() catch {};
+        last_modification_time = stat.mtime;
 
-            // delete the executable
-            dir.deleteFile("zig-out/bin/program.exe") catch {};
+        // clear the terminal
+        try std.io.getStdOut().writer().writeAll("\x1B[2J\x1B[H");
 
-            // try to build it again
-            p = std.ChildProcess.init(&[_][]const u8{ "zig", "build", "--prominent-compile-errors" }, allocator);
-            try p.?.spawn();
-            _ = try p.?.wait();
+        if (process) |*pp|
+            _ = pp.kill() catch {};
 
-            // try to run it after the build
-            // there should be a better way to do this check
-            var file_found = true;
-            dir.access("zig-out/bin/program.exe", .{}) catch {file_found = false;};
-            if (file_found)
-            {
-                p = std.ChildProcess.init(&[_][]const u8{"zig-out/bin/program.exe"}, allocator);
-                try p.?.spawn();
-            }
+        // delete the executable
+        dir.deleteFile("zig-out/bin/program.exe") catch {};
+
+        // try to build it again
+        process = std.ChildProcess.init(&.{ "zig", "build", "--prominent-compile-errors" }, allocator);
+        try process.?.spawn();
+        _ = try process.?.wait();
+
+        // try to run it after the build
+        if (dir.access("zig-out/bin/program.exe", .{})) {
+            process = std.ChildProcess.init(&.{"zig-out/bin/program.exe"}, allocator);
+            try process.?.spawn();
+        } else |err| {
+            std.debug.print("Can't run program: {}", .{err});
         }
 
+        // check for file changes every 100 milliseconds
         std.time.sleep(std.time.ns_per_ms * 100);
     }
 }

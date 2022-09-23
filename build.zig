@@ -20,7 +20,6 @@ pub fn build(b: *std.build.Builder) !void {
     const watcher = b.addExecutable("watcher", "watcher.zig");
     watcher.setBuildMode(b.standardReleaseOptions());
     watcher.linkLibC();
-    watcher.install();
 
     b.step("watcher", "Build watcher").dependOn(&watcher.step);
     var run_watcher_step = b.step("run-watcher", "Run Watcher");
