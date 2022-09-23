@@ -23,8 +23,9 @@ pub fn main() !void {
     ray.SetTargetFPS(60);
     defer ray.CloseWindow();
 
-    var ball_position = ray.Vector2{ .x = 0, .y = 0 };
-    var ball_speed = ray.Vector2{ .x = 5, .y = 4 };
+    var radius: f32 = 30;
+    var ball_position = ray.Vector2{ .x = radius, .y = radius };
+    var ball_speed = ray.Vector2{ .x = 3, .y = 2 };
 
     while (!ray.WindowShouldClose()) {
         ray.BeginDrawing();
@@ -34,12 +35,13 @@ pub fn main() !void {
         ball_speed.x *= 1.001;
         ball_speed.y *= 1.001;
 
-        if (ball_position.x < 0 or ball_position.x > width) ball_speed.x *= -1;
-        if (ball_position.y < 0 or ball_position.y > height) ball_speed.y *= -1;
+        if (ball_position.x - radius < 0 or ball_position.x + radius > width) ball_speed.x *= -1;
+
+        if (ball_position.y - radius < 0 or ball_position.y + radius > height) ball_speed.y *= -1;
 
         ray.ClearBackground(ray.BLACK);
         ray.DrawText("Hello, World!", 0, 30, 20, ray.LIGHTGRAY);
         ray.DrawFPS(0, 0);
-        ray.DrawCircleV(ball_position, 10, ray.GREEN);
+        ray.DrawCircleV(ball_position, radius, ray.GREEN);
     }
 }
