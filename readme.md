@@ -2,7 +2,7 @@
 
 **raylib-zig-playground** is a small [zig](https://ziglang.org/) environment for creating small tools or games based on [raylib](https://github.com/raysan5/raylib).
 
-Build with `zig build`.
+Build with `zig build`. Run with `zig build run-program`.
 
 `program.zig` is the main program.
 
