@@ -2,7 +2,7 @@
 
 **raylib-zig-playground** is a small [Zig](https://ziglang.org/) environment for creating small tools or games based on [raylib](https://github.com/raysan5/raylib).
 
-The goal of this code is to present a minimal hot-reloading setup. Whenever program.zig has new saved changes the program will get compiled and restarted.
+The goal of this code is to present a minimal code reloading setup. Whenever program.zig has new saved changes the program will get compiled and restarted.
 
 Here is how it looks.
 
