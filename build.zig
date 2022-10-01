@@ -7,7 +7,7 @@ pub fn build(b: *std.build.Builder) !void {
     program.setBuildMode(b.standardReleaseOptions());
     program.linkLibC();
     program.addObjectFile("raylib/raylib.lib");
-    program.addIncludeDir("raylib");
+    program.addIncludePath("raylib");
     program.linkSystemLibrary("winmm");
     program.linkSystemLibrary("gdi32");
     program.linkSystemLibrary("opengl32");

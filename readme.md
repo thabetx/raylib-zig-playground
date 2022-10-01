@@ -20,6 +20,11 @@ You can use `watch.bat` to start the watcher. Which runs `zig build run-watcher`
 
 `raylib.lib` is prebuilt by running `zig build -Drelease-fast` in `raylib/src` in [raylib's repository](https://github.com/raysan5/raylib).
 
+```
+raylib commit: 178a356cb4130f942f051f5669f46ebcb7f438bc
+zig version: 0.10.0-dev.4179+884979278
+```
+
 Note that this setup currently works only on Windows.
 
 Enjoy!

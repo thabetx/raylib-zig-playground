@@ -43,7 +43,7 @@ pub fn main() !void {
         dir.deleteFile("zig-out/bin/program.exe") catch {};
 
         // try to build it again
-        process = std.ChildProcess.init(&.{ "zig", "build", "--prominent-compile-errors" }, allocator);
+        process = std.ChildProcess.init(&.{ "zig", "build", "--prominent-compile-errors", "-freference-trace" }, allocator);
         try process.?.spawn();
         _ = try process.?.wait();
 
